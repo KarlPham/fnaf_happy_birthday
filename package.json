@@ -1,5 +1,5 @@
 {
-    "name": "template-vite",
+    "name": "fnaf_happy_birthday",
     "description": "A Phaser 3 template using Vite.",
     "version": "1.4.0",
     "type": "module",
@@ -13,7 +13,7 @@
     "bugs": {
         "url": "https://github.com/phaserjs/template-vite/issues"
     },
-    "homepage": "https://github.com/phaserjs/template-vite#readme",
+    "homepage": "https://karlpham.github.io/fnaf_happy_birthday",
     "scripts": {
         "dev": "node log.js dev & vite --config vite/config.dev.mjs",
         "build": "node log.js build & vite build --config vite/config.prod.mjs",
