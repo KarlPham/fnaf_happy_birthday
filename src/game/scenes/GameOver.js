@@ -8,7 +8,7 @@ export class GameOverScene extends Scene {
   preload() {
     this.load.image('office_bg', 'assets/images/maingame/office_bg.webp');
     // GIF split into frames: jumpscare_0.png, jumpscare_1.png ... or as a spritesheet
-    this.load.spritesheet('jumpscare', '/assets/images/animatronics/chika_rizz.png', {
+    this.load.spritesheet('jumpscare', 'assets/images/animatronics/chika_rizz.png', {
       frameWidth: 264, frameHeight: 240
     });
     this.load.audio('jumpscare_snd', 'assets/audio/jumpscare.mp3');
