@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-    base: './',
+    base: '/fnaf_happy_birthday/',
     build: {
         rollupOptions: {
             output: {
