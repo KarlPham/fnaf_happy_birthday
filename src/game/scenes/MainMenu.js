@@ -7,8 +7,8 @@ import { Scene } from 'phaser';
 
   preload() {
     // Load background and button assets
-    this.load.image('menu_bg', 'assets/images/menu_bg.jpg');
-    this.load.image('start_btn', 'assets/images/start_btn_1.png');
+    this.load.image('menu_bg', 'assets/images/menu/menu_bg.jpg');
+    this.load.image('start_btn', 'assets/images/menu/start_btn_1.png');
     }
 
     create() {
