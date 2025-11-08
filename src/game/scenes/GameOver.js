@@ -23,7 +23,7 @@ export class GameOverScene extends Scene {
     this.anims.create({
       key: 'scare',
       frames: this.anims.generateFrameNumbers('jumpscare', { start: 0, end: 174 }), // frame count example
-      frameRate: 50,
+      frameRate: 25,
       repeat: -1
     });
     anim.play('scare');
