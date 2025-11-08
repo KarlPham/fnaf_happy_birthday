@@ -1,6 +1,7 @@
 import {MainMenuScene} from './scenes/MainMenu';
 import { MainGame } from './scenes/Game';
 import { GameOverScene } from './scenes/GameOver';
+import { WinScene } from './scenes/GameWin';
 import { AUTO, Game } from 'phaser';
 
 
@@ -18,7 +19,8 @@ const config = {
     scene: [
         MainMenuScene,
         MainGame,
-        GameOverScene
+        GameOverScene,
+        WinScene
     ]
 };
 
