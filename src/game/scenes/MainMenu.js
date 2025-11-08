@@ -1,28 +1,31 @@
 import { Scene } from 'phaser';
 
-export class MainMenu extends Scene
-{
-    constructor ()
-    {
-        super('MainMenu');
+ export class MainMenuScene extends Scene{
+    constructor() {
+    super('MainMenuScene');
+  }
+
+  preload() {
+    // Load background and button assets
+    this.load.image('menu_bg', 'assets/images/menu_bg.jpg');
+    this.load.image('start_btn', 'assets/images/start_btn_1.png');
     }
 
-    create ()
-    {
-        this.add.image(512, 384, 'background');
+    create() {
+    // Display the background image, full screen
+    const bg = this.add.image(0, 0, 'menu_bg').setOrigin(0, 0);
+    bg.displayWidth = this.sys.game.config.width;
+    bg.displayHeight = this.sys.game.config.height;
 
-        this.add.image(512, 300, 'logo');
+    // Add and center Start button
+    const { width, height } = this.sys.game.config;
+    const startBtn = this.add.image(width/2, height/2.5, 'start_btn').setInteractive();
+    startBtn.setScale(0.2); // Scale as needed for appearance
 
-        this.add.text(512, 460, 'Main Menu', {
-            fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
-            stroke: '#000000', strokeThickness: 8,
-            align: 'center'
-        }).setOrigin(0.5);
-
-        this.input.once('pointerdown', () => {
-
-            this.scene.start('Game');
-
-        });
-    }
+    // Clicking the button starts the Game scene
+    startBtn.on('pointerdown', () => {
+      this.scene.start('GameScene');
+    });
+  }
 }
+
