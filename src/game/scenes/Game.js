@@ -3,7 +3,9 @@ import { Scene } from 'phaser';
 export class MainGame extends Scene {
     constructor() {
         super('GameScene');
-        this.timer = 30;               // seconds to survive
+    }
+    init(){
+        this.timer = 30;               
         this.power = 100;
         this.animatronicActive = false;
         this.animatronicTimer = null;
