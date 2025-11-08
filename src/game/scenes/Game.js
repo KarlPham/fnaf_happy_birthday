@@ -3,20 +3,17 @@ import { Scene } from 'phaser';
 export class MainGame extends Scene {
     constructor() {
         super('GameScene');
-        this.animatronics = [];
-        this.baseReactionTime = 2000; // ms for first spawn
-        this.minReactionTime = 700;    // ms for toughest/fastest spawn
-        this.spawnInterval = 1700;     // ms (how often a new animatronic arrives)
         this.timer = 30;               // seconds to survive
         this.power = 100;
-        this.animatronicReappearCount = {};
+        this.animatronicActive = false;
+        this.animatronicTimer = null;
     }
 
     preload() {
         this.load.image('office_bg', 'assets/images/maingame/office_bg.webp');
         this.load.image('animatronic', 'assets/images/animatronics/chika.png');
         this.load.image('sound_btn', 'assets/images/maingame/sound_btn.png');
-        this.load.audio('birthday_sound', 'assets/sounds/birthday_sound.mp3');
+        this.load.audio('siu_sound', 'assets/audio/sound.mp3');
     }
 
     create() {
@@ -33,36 +30,54 @@ export class MainGame extends Scene {
         this.soundBtn.on('pointerdown', () => this.handleSound());
 
         // Animatronic, hidden by default
-        const chika = this.animatronic = this.add.image(512, 275, 'animatronic').setVisible(true);
-        chika.setScale(0.5);
+        this.animatronic = this.add.image(512, 275, 'animatronic').setVisible(false);
+        this.animatronic.setScale(0.5);
 
-        this.spawnAnimatronic();
+        this.soundEffect = this.sound.add('siu_sound');
 
-        this.time.addEvent({ delay: 3000, callback: this.spawnAnimatronic, callbackScope: this, loop: true });
+        // Start game timers
         this.time.addEvent({ delay: 1000, callback: this.onTimerTick, callbackScope: this, loop: true });
+        this.scheduleNextAnimatronic();
     }
 
 
     handleSound() {
-        if (this.animatronic.visible && this.power > 0) {
+        if (this.animatronicActive && this.power > 0) {
             this.animatronic.setVisible(false);
-            this.power -= 15;
+            this.animatronicActive = false;
+            this.power -= 12;
+            this.soundEffect.play();
+            if (this.animatronicTimer) {
+                this.animatronicTimer.remove();
+                this.animatronicTimer = null;
+            }
+            if (this.power <= 0) {
+                this.power = 0;
+                this.powerText.setFill('#f00');
+            }
             this.powerText.setText(`Power: ${this.power}%`);
-            this.sound.play('birthday_sound');
-            if (this.power <= 0) this.gameOver();
+            this.scheduleNextAnimatronic(); // Schedule next, to avoid overlap
         }
     }
 
-    spawnAnimatronic() {
-        if (!this.animatronic.visible) {
-            this.animatronic.setVisible(true);
-            this.time.delayedCall(2000, () => {
-                if (this.animatronic.visible) {
-                    this.gameOver();
-                }
-            });
-        }
+    scheduleNextAnimatronic() {
+        const minDelay = 1200, maxDelay = 2800;
+        const delay = Phaser.Math.Between(minDelay, maxDelay);
+        this.time.delayedCall(delay, this.spawnAnimatronic, [], this);
     }
+
+    // Show Animatronic and start their threat timer
+    spawnAnimatronic() {
+        if (this.animatronicActive) return; // Don't double-spawn
+        this.animatronic.setVisible(true);
+        this.animatronicActive = true;
+        this.animatronicTimer = this.time.delayedCall(2000, () => {
+            if (this.animatronicActive) {
+                this.gameOver();
+            }
+        });
+    }
+
 
     onTimerTick() {
         if (--this.timer <= 0) {
@@ -70,6 +85,10 @@ export class MainGame extends Scene {
         } else {
             this.timerText.setText(`Time: ${this.timer}`);
         }
+    }
+
+    gameOver() {
+        this.scene.start('GameOverScene');
     }
 
 }
